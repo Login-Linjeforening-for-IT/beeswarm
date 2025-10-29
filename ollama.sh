@@ -24,6 +24,6 @@ fi
 ./build/bin/llama-server \
     -m ./models/mistral/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf \
     --port 8081 \
-    --ctx-size 100000 \
+    --ctx-size 5000 \
     -t 100 \
     -ngl 33
