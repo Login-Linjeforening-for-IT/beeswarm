@@ -1,2 +1,3 @@
 .env
-legacy/llama.cpp/tools/server/public_legacy/
+node_modules
+tmp
