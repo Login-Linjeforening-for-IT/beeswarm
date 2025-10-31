@@ -4,7 +4,7 @@ import { registerClient } from '#utils/ws/registerClient.ts'
 import { handleMessage } from '#utils/ws/handleMessage.ts'
 import { removeClient } from '#utils/ws/removeClient.ts'
 
-export default fp(async function wsSharePlugin(fastify: FastifyInstance) {
+export default fp(async function wsPlugin(fastify: FastifyInstance) {
     fastify.register(async function (fastify) {
         fastify.get('/api/client/ws/:id', { websocket: true }, (connection, req: FastifyRequest) => {
             const id = (req.params as { id: string}).id

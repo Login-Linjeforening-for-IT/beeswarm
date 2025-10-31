@@ -1,18 +1,18 @@
 import { WebSocket } from 'ws'
-import { shareClients } from './handleMessage.ts'
+import { beeswarm } from './handleMessage.ts'
 import { WebSocket as WS } from 'ws'
 
 export function registerClient(id: string, socket: WebSocket) {
-    if (!shareClients.has(id)) {
-        shareClients.set(id, new Set())
+    if (!beeswarm.has(id)) {
+        beeswarm.set(id, new Set())
     }
 
-    shareClients.get(id)!.add(socket)
+    beeswarm.get(id)!.add(socket)
     broadcastJoin(id)
 }
 
 function broadcastJoin(id: string) {
-    const clients = shareClients.get(id)
+    const clients = beeswarm.get(id)
     if (!clients) {
         return
     }
