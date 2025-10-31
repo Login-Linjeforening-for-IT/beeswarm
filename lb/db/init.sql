@@ -18,11 +18,3 @@ BEGIN
         EXECUTE 'GRANT ALL PRIVILEGES ON DATABASE "beeswarm" TO "beeswarm"';
     END IF;
 END $$;
-
--- Links
-CREATE TABLE IF NOT EXISTS links (
-    id TEXT PRIMARY KEY,
-    path TEXT NOT NULL,
-    visits INT NOT NULL DEFAULT 0,
-    timestamp TIMESTAMPTZ DEFAULT NOW()
-);
