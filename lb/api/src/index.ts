@@ -16,7 +16,7 @@ fastify.register(cors, {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD']
 })
 
-const port = Number(config.PORT) || 8081
+const port = Number(config.PORT) || 8080
 
 fastify.register(ws, { prefix: "/api" })
 fastify.register(routes, { prefix: "/api" })

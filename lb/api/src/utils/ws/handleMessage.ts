@@ -11,17 +11,17 @@ export async function handleMessage(
 ) {
     try {
         const msg = JSON.parse(rawMessage.toString())
-        if (msg.type !== 'edit') {
+        if (msg.type !== 'update') {
             return
         }
 
-        broadcastUpdate(id, socket, msg.content)
+        broadcastUpdate(id, socket, msg.client)
     } catch (err) {
         console.error('Invalid WebSocket message:', err)
     }
 }
 
-function broadcastUpdate(id: string, sender: WS, content: string) {
+function broadcastUpdate(id: string, sender: WS, client: Client) {
     const clients = beeswarm.get(id)
     if (!clients) {
         return
@@ -29,7 +29,7 @@ function broadcastUpdate(id: string, sender: WS, content: string) {
 
     const payload = JSON.stringify({
         type: 'update',
-        content,
+        client,
         timestamp: new Date().toISOString(),
         participants: clients.size
     })

@@ -6,57 +6,14 @@ import { useEffect, useState } from 'react'
 import config from '../config'
 import { Eye } from 'lucide-react'
 
-const sampleClient: Client = {
-    name: "Workstation-01",
-    ram: [
-        { name: "Corsair Vengeance 16GB", load: 0.68 },
-        { name: "Corsair Vengeance 16GB", load: 0.52 }
-    ],
-    cpu: [
-        { name: "Intel Core i9-13900K", load: 0.74 },
-        { name: "Intel Core i9-13900K", load: 0.81 },
-        { name: "Intel Core i9-13900K", load: 0.65 },
-        { name: "Intel Core i9-13900K", load: 0.79 },
-        { name: "Intel Core i9-13900K", load: 0.60 },
-        { name: "Intel Core i9-13900K", load: 0.83 },
-        { name: "Intel Core i9-13900K", load: 0.77 },
-        { name: "Intel Core i9-13900K", load: 0.69 }
-    ],
-    gpu: [
-        { name: "NVIDIA RTX 4090", load: 0.56 },
-        { name: "NVIDIA RTX 4090", load: 0.62 }
-    ]
-}
-const sampleClient2: Client = {
-    name: "Workstation-02",
-    ram: [
-        { name: "Corsair Vengeance 16GB", load: 0.43 },
-        { name: "Corsair Vengeance 16GB", load: 0.43 }
-    ],
-    cpu: [
-        { name: "Intel Core i9-13900K", load: 0.43 },
-        { name: "Intel Core i9-13900K", load: 0.43 },
-        { name: "Intel Core i9-13900K", load: 0.54 },
-        { name: "Intel Core i9-13900K", load: 0.79 },
-        { name: "Intel Core i9-13900K", load: 0.54 },
-        { name: "Intel Core i9-13900K", load: 0.83 },
-        { name: "Intel Core i9-13900K", load: 0.42 },
-        { name: "Intel Core i9-13900K", load: 0.69 }
-    ],
-    gpu: [
-        { name: "NVIDIA RTX 4090", load: 0.21 },
-        { name: "NVIDIA RTX 4090", load: 0.62 }
-    ]
-}
-
 export default function Home() {
-    const [clients, setClients] = useState([sampleClient, sampleClient2])
+    const [clients, setClients] = useState<Client[]>([])
     const [reconnect, setReconnect] = useState(false)
     const [isConnected, setIsConnected] = useState(false)
     const [participants, setParticipants] = useState(1)
 
     useEffect(() => {
-        const ws = new WebSocket(`${config.url.api_ws}/clients/ws/beeswarm`)
+        const ws = new WebSocket(`${config.url.api_ws}/client/ws/beeswarm`)
 
         ws.onopen = () => {
             setReconnect(false)
@@ -77,13 +34,18 @@ export default function Home() {
                 const msg = JSON.parse(event.data)
                 if (msg.type === 'update') {
                     setParticipants(msg.participants)
-                    setClients((prev) =>
-                        prev.map((client) =>
-                            client.name === msg.client.name
-                                ? { ...client, ...msg.client.resources }
-                                : client
-                        )
-                    )
+                    setClients((prev) => {
+                        const existing = prev.find(client => client.name === msg.client.name)
+                        if (existing) {
+                            return prev.map(client =>
+                                client.name === msg.client.name
+                                    ? { ...client, ...msg.client }
+                                    : client
+                            )
+                        } else {
+                            return [...prev, msg.client]
+                        }
+                    })
                 }
 
                 if (msg.type === 'join') {
@@ -97,7 +59,7 @@ export default function Home() {
         return () => {
             ws.close()
         }
-    }, [reconnect])
+    }, [reconnect, clients])
 
     useEffect(() => {
         setTimeout(() => {
