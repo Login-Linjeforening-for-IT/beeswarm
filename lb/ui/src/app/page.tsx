@@ -113,25 +113,25 @@ export default function Home() {
     })
 
     return (
-        <div className="min-h-screen bg-zinc-50 font-sans dark:bg-black p-16 flex flex-col gap-8">
+        <div className="min-h-screen bg-black/3 p-16 flex flex-col gap-8">
             <div className='w-full flex justify-between items-center'>
                 <h1 className='font-semibold text-2xl h-fit'>BeeSwarm LB Metrics</h1>
-                <div className='flex gap-2 items-center bg-white/10 rounded-lg p-2 px-4'>
-                    <Eye />
+                <div className={`flex gap-2 items-center bg-white/5 rounded-lg p-2 px-4 ${config.light}`}>
+                    <Eye className='stroke-white/80' />
                     <h1>{participants}</h1>
                 </div>
             </div>
-            <div className='flex w-full gap-4'>
-                <div className='bg-white/10 rounded-lg p-4 w-full flex justify-between'>
-                    <h1 className='text-lg font-semibold'>RAM</h1>
+            <div className="flex w-full gap-4">
+                <div className={`flex gap-2 items-center bg-white/5 rounded-lg p-2 px-4 text-lg font-semibold ${config.light}`}>
+                    <h1>RAM</h1>
                     <Metric metric={totalLoad.ram} />
                 </div>
-                <div className='bg-white/10 rounded-lg p-4 w-full flex justify-between font-semibold'>
-                    <h1 className='text-lg'>CPU</h1>
+                <div className={`flex gap-2 items-center bg-white/5 rounded-lg p-2 px-4 text-lg font-semibold ${config.light}`}>
+                    <h1>CPU</h1>
                     <Metric metric={totalLoad.cpu} />
                 </div>
-                <div className='bg-white/10 rounded-lg p-4 w-full flex justify-between'>
-                    <h1 className='text-lg font-semibold'>GPU</h1>
+                <div className={`flex gap-2 items-center bg-white/5 rounded-lg p-2 px-4 text-lg font-semibold ${config.light}`}>
+                    <h1>GPU</h1>
                     <Metric metric={totalLoad.gpu} />
                 </div>
             </div>

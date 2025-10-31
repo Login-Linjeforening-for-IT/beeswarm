@@ -5,12 +5,13 @@ import CPU from './cpu'
 import GPU from './gpu'
 import RAM from './ram'
 import Metric from './metric'
+import config from '@/src/config'
 
 export default function DisplayClient({ client }: { client: Client }) {
     const [open, setOpen] = useState(false)
 
     return (
-        <div className='grid gap-4 cursor-pointer bg-white/10 rounded-lg p-4' onClick={() => setOpen(prev => !prev)}>
+        <div className={`grid gap-4 cursor-pointer bg-white/5 rounded-lg p-4 ${config.light}`} onClick={() => setOpen(prev => !prev)}>
             <Open client={client} open={open} />
             <Closed client={client} open={open} />
         </div>
