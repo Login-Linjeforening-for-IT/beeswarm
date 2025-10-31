@@ -1,5 +1,5 @@
 import WebSocket from 'ws'
-import sendMetrics from '#utils/ws/sendMetrics.ts'
+import sendMetrics from '#utils/sendMetrics.ts'
 import config from '#constants'
 
 if (!config.ws_api) {
@@ -13,7 +13,7 @@ socket.on('open', () => {
 })
 
 const interval = setInterval(() => {
-    sendMetrics('beeswarm', socket)
+    sendMetrics(socket)
 }, 1000)
 
 socket.on('message', (rawMessage) => {

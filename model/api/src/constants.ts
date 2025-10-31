@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config({ path: '../.env' })
 
 const requiredEnvironmentVariables = [
-    'WS_API',
+    'API',
 ]
 
 const missingVariables = requiredEnvironmentVariables.filter(
@@ -24,7 +24,7 @@ const env = Object.fromEntries(
 )
 
 const config = {
-    ws_api: env.ws_api
+    ws_api: env.API
 }
 
 export default config
