@@ -1,12 +1,19 @@
 services:
-  llama-server:
+  # llama-server:
+  #   build: .
+  #   container_name: llama-server
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./llama.cpp:/app/llama.cpp
+  #   restart: always
+
+  api:
     build: .
-    container_name: llama-server
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./llama.cpp:/app/llama.cpp
+    container_name: beeswarm_model_api
     restart: always
+    environment:
+      API: ${API:-beeswarm}
 
 #   postgres:
 #     image: postgres:15
