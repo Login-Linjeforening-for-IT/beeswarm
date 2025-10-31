@@ -1,37 +1,39 @@
-import cors from '@fastify/cors'
-import Fastify from 'fastify'
-import routes from './routes.ts'
-import getIndex from './handlers/index/get.ts'
-import websocketPlugin from '@fastify/websocket'
-import ws from './plugins/ws.ts'
+import WebSocket from 'ws'
+import sendMetrics from '#utils/ws/sendMetrics.ts'
+import config from '#constants'
 
-const fastify = Fastify({
-    logger: true
+if (!config.ws_api) {
+    process.exit('Missing WS API')
+}
+
+const socket = new WebSocket(config.ws_api)
+
+socket.on('open', () => {
+    console.log('Connected to WebSocket server.')
 })
 
-fastify.register(websocketPlugin)
-fastify.register(cors, {
-    origin: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD']
-})
+const interval = setInterval(() => {
+    sendMetrics('beeswarm', socket)
+}, 1000)
 
-const port = Number(process.env.PORT) || 8081
-
-fastify.register(ws, { prefix: "/api" })
-fastify.register(routes, { prefix: "/api" })
-fastify.get('/', getIndex)
-
-async function start() {
+socket.on('message', (rawMessage) => {
     try {
-        await fastify.listen({ port, host: '0.0.0.0' })
+        const msg = JSON.parse(rawMessage.toString())
+        console.log('Received:', msg)
+
+        if (msg.type === 'prompt') {
+            console.log("recieved prompt", msg)
+        }
     } catch (err) {
-        fastify.log.error(err)
-        process.exit(1)
+        console.error('Invalid message format:', err)
     }
-}
+})
 
-async function main() {
-    start()
-}
+socket.on('close', () => {
+    console.log('WebSocket connection closed.')
+    clearInterval(interval)
+})
 
-main()
+socket.on('error', (err) => {
+    console.error('WebSocket error:', err)
+})

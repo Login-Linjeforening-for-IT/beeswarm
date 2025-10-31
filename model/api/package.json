@@ -1,31 +1,25 @@
 {
-  "name": "beeswarm-lb",
+  "name": "beeswarm-model-api",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
   "author": "",
   "type": "module",
-  "main": "src/index.js",
+  "main": "src/index.ts",
   "scripts": {
     "start": "node src/index.ts"
   },
   "dependencies": {
-    "@fastify/cors": "^11.1.0",
-    "@fastify/websocket": "^11.2.0",
     "dotenv": "^17.2.3",
-    "fastify": "^5.6.1",
-    "pg": "^8.16.3",
+    "systeminformation": "^5.27.11",
     "ws": "^8.18.3"
   },
   "devDependencies": {
     "@types/node": "^24.9.2",
-    "@types/pg": "^8.15.6",
-    "@types/ws": "^8.18.1",
     "typescript": "^5.9.3"
   },
   "imports": {
     "#constants": "./src/constants.ts",
-    "#utils/*": "./src/utils/*",
-    "#db": "./src/utils/db.ts"
+    "#utils/*": "./src/utils/*"
   }
 }
