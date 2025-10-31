@@ -1,11 +1,20 @@
 services:
-  beeswarm:
-    build: .
-    container_name: beeswarm
+  api:
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
+    container_name: beeswarm_api
     ports:
-      - "8081:8080"
-    volumes:
-      - ./llama.cpp:/app/llama.cpp
+      - "8080:8080"
+    restart: always
+
+  ui:
+    build:
+      context: ./ui
+      dockerfile: ./Dockerfile
+    container_name: beeswarm_ui
+    ports:
+      - "3000:3000"
     restart: always
 
 #   postgres:

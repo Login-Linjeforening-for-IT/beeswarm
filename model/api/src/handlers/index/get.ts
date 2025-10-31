@@ -7,5 +7,5 @@ import type { FastifyReply, FastifyRequest } from "fastify"
  */
 export default async function getIndex(req: FastifyRequest, res: FastifyReply) {
     const routes = req.server.printRoutes({ commonPrefix: false })
-    res.send(`BeeSwarm LB API.\n\nValid endpoints are:\n\n${routes}`)
+    res.send(`BeeSwarm Model API.\n\nSending usage metrics to LB.\n\nValid endpoints are:\n\n${routes}`)
 }
