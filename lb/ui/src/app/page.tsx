@@ -54,14 +54,9 @@ export default function Home() {
     const [reconnect, setReconnect] = useState(false)
     const [isConnected, setIsConnected] = useState(false)
     const [participants, setParticipants] = useState(1)
-    const totalLoad = {
-        ram: Math.ceil(clients.reduce((sum, client) => sum + client.ram.reduce((sum, ram) => sum + ram.load, 0) / client.ram.length * 100, 0) / clients.length),
-        cpu: Math.ceil(clients.reduce((sum, client) => sum + client.cpu.reduce((sum, cpu) => sum + cpu.load, 0) / client.cpu.length * 100, 0) / clients.length),
-        gpu: Math.ceil(clients.reduce((sum, client) => sum + client.gpu.reduce((sum, gpu) => sum + gpu.load, 0) / client.gpu.length * 100, 0) / clients.length),
-    }
 
     useEffect(() => {
-        const ws = new WebSocket(`${config.url.api_ws}/clients/ws`)
+        const ws = new WebSocket(`${config.url.api_ws}/clients/ws/beeswarm`)
 
         ws.onopen = () => {
             setReconnect(false)
@@ -85,8 +80,8 @@ export default function Home() {
                     setClients((prev) =>
                         prev.map((client) =>
                             client.name === msg.client.name
-                            ? { ...client, ...msg.client.resources }
-                            : client
+                                ? { ...client, ...msg.client.resources }
+                                : client
                         )
                     )
                 }
@@ -121,6 +116,20 @@ export default function Home() {
                     <h1>{participants}</h1>
                 </div>
             </div>
+            {clients.length ? <Content clients={clients} /> : <h1>No clients connected.</h1>}
+        </div>
+    )
+}
+
+function Content({ clients }: { clients: Client[] }) {
+    const totalLoad = {
+        ram: Math.ceil(clients.reduce((sum, client) => sum + client.ram.reduce((sum, ram) => sum + ram.load, 0) / client.ram.length * 100, 0) / clients.length),
+        cpu: Math.ceil(clients.reduce((sum, client) => sum + client.cpu.reduce((sum, cpu) => sum + cpu.load, 0) / client.cpu.length * 100, 0) / clients.length),
+        gpu: Math.ceil(clients.reduce((sum, client) => sum + client.gpu.reduce((sum, gpu) => sum + gpu.load, 0) / client.gpu.length * 100, 0) / clients.length),
+    }
+
+    return (
+        <div className='space-y-8'>
             <div className="flex w-full gap-4">
                 <div className={`flex gap-2 items-center bg-white/5 rounded-lg p-2 px-4 text-lg font-semibold ${config.light}`}>
                     <h1>RAM</h1>

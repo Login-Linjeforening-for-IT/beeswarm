@@ -4,6 +4,7 @@ import routes from './routes.ts'
 import getIndex from './handlers/index/get.ts'
 import websocketPlugin from '@fastify/websocket'
 import ws from './plugins/ws.ts'
+import config from '#constants'
 
 const fastify = Fastify({
     logger: true
@@ -15,7 +16,7 @@ fastify.register(cors, {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD']
 })
 
-const port = Number(process.env.PORT) || 8081
+const port = Number(config.PORT) || 8081
 
 fastify.register(ws, { prefix: "/api" })
 fastify.register(routes, { prefix: "/api" })

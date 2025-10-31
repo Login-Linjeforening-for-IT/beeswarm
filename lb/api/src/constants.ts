@@ -25,6 +25,7 @@ const env = Object.fromEntries(
 )
 
 const config = {
+    PORT: env.API_PORT,
     DB_PORT: env.DB_PORT,
     DB_MAX_CONN: env.DB_MAX_CONN,
     DB_IDLE_TIMEOUT_MS: env.DB_IDLE_TIMEOUT_MS,

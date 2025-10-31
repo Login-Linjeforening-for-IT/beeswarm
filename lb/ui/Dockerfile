@@ -1,11 +1,11 @@
 # Latest node alpine image
-FROM node:20-bookworm-slim
+FROM node:alpine
 
 # Sets the working directory
 WORKDIR /app
 
 # Production env vars
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
 # Installs services
