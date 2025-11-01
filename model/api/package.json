@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@types/node": "^24.9.2",
+    "@types/ws": "^8.18.1",
     "typescript": "^5.9.3"
   },
   "imports": {

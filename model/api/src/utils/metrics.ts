@@ -1,5 +1,6 @@
 import os from "os"
 import si from "systeminformation"
+import getGpuUsage from './gpu/mac.ts'
 
 export default async function metrics(): Promise<Client> {
     const name = os.hostname()
@@ -24,11 +25,23 @@ export default async function metrics(): Promise<Client> {
     }))
 
     // GPU info
+    let gpu: GPU[]
     const graphics = await si.graphics()
-    const gpu: GPU[] = graphics.controllers.map((g) => ({
-        name: g.model,
-        load: (g.utilizationGpu || 0) / 100,
-    }))
+    const mac = process.platform === 'darwin'
+    if (mac) {
+        const gpuMetrics = await getGpuUsage()
+        gpu = graphics.controllers.map((g) => ({
+            name: g.model,
+            load: gpuMetrics.hwActiveResidency,
+            cores: g.cores,
+            metrics: gpuMetrics,
+        }))
+    } else {
+        gpu = graphics.controllers.map((g) => ({
+            name: g.model,
+            load: (g.utilizationGpu || 0) / 100,
+        }))
+    }
 
     return { name, ram, cpu, gpu }
 }

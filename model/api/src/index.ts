@@ -10,25 +10,31 @@ if (!config.ws_api) {
 const MAX_BACKOFF = 30000
 let backoff = 1000
 let interval: NodeJS.Timeout | null = null
+let connecting = false
+let socket: WebSocket | null = null
 
 function connect() {
+    if (socket || connecting) return
+
     console.log(`Connecting to ${config.ws_api} ...`)
 
-    const socket = new WebSocket(`${config.ws_api}/client/ws/beeswarm`)
+    socket = new WebSocket(`${config.ws_api}/client/ws/beeswarm`)
 
     socket.on('open', () => {
         console.log('Connected to WebSocket server.')
         backoff = 1000
 
         interval = setInterval(() => {
-            sendMetrics(socket)
+            if (socket?.readyState === WebSocket.OPEN) {
+                sendMetrics(socket)
+            }
         }, 1000)
     })
 
     socket.on('message', (rawMessage) => {
         try {
             const msg = JSON.parse(rawMessage.toString())
-            if (msg.type !== 'join') {
+            if (msg.type !== 'join' && msg.type !== 'update') {
                 console.log('Received:', msg)
             }
 
@@ -42,7 +48,11 @@ function connect() {
 
     socket.on('close', () => {
         console.warn('WebSocket connection closed.')
-        if (interval) clearInterval(interval)
+        if (interval) {
+            clearInterval(interval)
+        }
+
+        socket = null
         retryConnection()
     })
 
@@ -52,7 +62,7 @@ function connect() {
         }
 
         console.error('WebSocket error:', err)
-        socket.close()
+        socket?.close()
     })
 }
 

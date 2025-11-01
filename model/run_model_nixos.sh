@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+CURRENT_DIR=$(pwd)
+
 # --- Install dependencies ---
 # For NixOS, use nix-shell to provide required packages
 if [ -z "$IN_NIX_SHELL" ]; then
@@ -43,9 +45,20 @@ else
 fi
 
 # --- Run llama-server ---
-./build/bin/llama-server \
-    -m ./models/mistral/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf \
+cd api || exit
+npm i
+node src/index.ts &
+NODE_PID=$!
+
+echo "node pid $NODE_PID"
+
+pwd
+
+./../llama.cpp/bin/llama-server \
+    -m "$CURRENT_DIR/models/mistral/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf" \
     --port 8081 \
     --ctx-size 5000 \
     -t $(nproc) \
     -ngl 33
+
+trap "echo 'Stopping server...'; kill $NODE_PID 2>/dev/null" EXIT

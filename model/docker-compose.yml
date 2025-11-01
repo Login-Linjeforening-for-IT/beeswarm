@@ -1,15 +1,19 @@
 services:
-  # llama-server:
-  #   build: .
-  #   container_name: llama-server
-  #   ports:
-  #     - "8081:8080"
-  #   volumes:
-  #     - ./llama.cpp:/app/llama.cpp
-  #   restart: always
+  llama-server:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: llama-server
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./llama.cpp:/app/llama.cpp
+    restart: always
 
   api:
-    build: .
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
     container_name: beeswarm_model_api
     restart: always
     ports:
