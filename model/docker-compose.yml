@@ -10,6 +10,17 @@ services:
       - ./llama.cpp:/app/llama.cpp
     restart: always
 
+  ui:
+    build:
+      context: ./api
+      dockerfile: ./Dockerfile
+    container_name: beeswarm_model_api
+    restart: always
+    ports:
+      - "8082:8080"
+    environment:
+      API: ${API:-beeswarm}
+
   api:
     build:
       context: ./api
