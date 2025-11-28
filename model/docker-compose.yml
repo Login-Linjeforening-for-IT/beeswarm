@@ -1,9 +1,9 @@
 services:
-  llama-server:
+  llama_server:
     build: 
       context: .
       dockerfile: ./Dockerfile
-    container_name: llama-server
+    container_name: llama_server
     ports:
       - "8081:8080"
     volumes:
