@@ -1,6 +1,7 @@
 services:
   llama_server:
-    build: 
+    image: llama
+    build:
       context: .
       dockerfile: ./Dockerfile
     container_name: llama_server
@@ -11,6 +12,7 @@ services:
     restart: always
 
   ui:
+    image: beeswarm
     build:
       context: ./api
       dockerfile: ./Dockerfile
@@ -22,6 +24,7 @@ services:
       API: ${API:-beeswarm}
 
   api:
+    image: beeswarm_api
     build:
       context: ./api
       dockerfile: ./Dockerfile

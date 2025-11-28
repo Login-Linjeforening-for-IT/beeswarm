@@ -1,5 +1,6 @@
 services:
   ui:
+    image: beeswarm_lb
     build:
       context: ./ui
       dockerfile: ./Dockerfile
@@ -9,6 +10,7 @@ services:
     restart: always
 
   api:
+    image: beeswarm_lb_api
     build:
       context: ./api
       dockerfile: ./Dockerfile
