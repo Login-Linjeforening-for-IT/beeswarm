@@ -10,11 +10,6 @@ services:
     restart: always
     mem_limit: 1g
     cpus: "2.0"
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-      - 10.177.195.1
-      - 213.186.33.99
 
   api:
     image: beeswarm_lb_api
@@ -28,11 +23,6 @@ services:
     env_file: .env
     mem_limit: 1g
     cpus: "2.0"
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-      - 10.177.195.1
-      - 213.186.33.99
 
   postgres:
     image: postgres:15
@@ -51,11 +41,6 @@ services:
       retries: 5
     mem_limit: 1g
     cpus: "2.0"
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
-      - 10.177.195.1
-      - 213.186.33.99
 
 volumes:
   postgres_data:
