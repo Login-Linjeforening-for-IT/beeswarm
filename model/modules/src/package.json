@@ -10,6 +10,6 @@
     "start": "node src/internet.ts"
   },
   "dependencies": {
-    "puppeteer": "^24.26.1"
+    "puppeteer": "^24.34.0"
   }
 }

@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "dotenv": "^17.2.3",
-    "systeminformation": "^5.27.17",
+    "systeminformation": "^5.28.5",
     "ws": "^8.18.3"
   },
   "devDependencies": {
